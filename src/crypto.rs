@@ -10,7 +10,7 @@ type HmacSha256 = Hmac<Sha256>;
 /// PRF(key, label) = HMAC-SHA-256(key, label || 0x00 || iter || length)
 pub fn mikey_prf(key: &[u8], label: &[u8], output_len: usize) -> Result<Vec<u8>> {
     let mut result = Vec::with_capacity(output_len);
-    let iterations = (output_len + 31) / 32; // SHA-256 output = 32 bytes
+    let iterations = output_len.div_ceil(32); // SHA-256 output = 32 bytes
 
     for i in 0..iterations {
         let mut mac =
