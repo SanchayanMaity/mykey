@@ -79,10 +79,7 @@ impl MikeyMessage {
     }
 
     /// Build a DH responder message (data_type = 5)
-    pub fn new_dh_resp(
-        csc_id: u32,
-        dh_public: &[u8; 32],
-    ) -> Result<Self> {
+    pub fn new_dh_resp(csc_id: u32, dh_public: &[u8; 32]) -> Result<Self> {
         let header = CommonHeader {
             version: 1,
             data_type: DataType::DhResp,
@@ -114,12 +111,7 @@ impl MikeyMessage {
     }
 
     /// Build a PSK initiator message (data_type = 0)
-    pub fn new_psk_init(
-        csc_id: u32,
-        ssrc: u32,
-        rand_bytes: &[u8],
-        psk: &[u8],
-    ) -> Result<Self> {
+    pub fn new_psk_init(csc_id: u32, ssrc: u32, rand_bytes: &[u8], psk: &[u8]) -> Result<Self> {
         let header = CommonHeader {
             version: 1,
             data_type: DataType::PskInit,
@@ -211,10 +203,7 @@ impl MikeyMessage {
         buf.push(header.version);
         buf.push(header.data_type as u8);
         buf.push(header.next_payload);
-        buf.push(
-            if header.v_flag { 0x80 } else { 0x00 }
-                | (header.prf_func as u8 & 0x7F),
-        );
+        buf.push(if header.v_flag { 0x80 } else { 0x00 } | (header.prf_func as u8 & 0x7F));
         buf.extend_from_slice(&header.csc_id.to_be_bytes());
         buf.push(header.cs_count);
         buf.push(header.cs_id_map_type);
@@ -313,12 +302,7 @@ impl DhInitiator {
             .ok_or(MikeyError::Crypto("keypair already consumed".into()))?
             .public;
 
-        MikeyMessage::new_dh_init(
-            self.csc_id,
-            self.ssrc,
-            &self.rand_bytes,
-            public.as_bytes(),
-        )
+        MikeyMessage::new_dh_init(self.csc_id, self.ssrc, &self.rand_bytes, public.as_bytes())
     }
 
     /// Process the responder's message and derive SRTP keys
@@ -327,9 +311,7 @@ impl DhInitiator {
         resp: &MikeyMessage,
         suite: SrtpCryptoSuite,
     ) -> Result<SrtpKeyMaterial> {
-        let peer_pub = resp
-            .dh_public()
-            .ok_or(MikeyError::MissingPayload("DH"))?;
+        let peer_pub = resp.dh_public().ok_or(MikeyError::MissingPayload("DH"))?;
 
         if peer_pub.len() != 32 {
             return Err(MikeyError::InvalidDhValue);
@@ -379,9 +361,7 @@ impl DhResponder {
         init: &MikeyMessage,
         suite: SrtpCryptoSuite,
     ) -> Result<SrtpKeyMaterial> {
-        let peer_pub = init
-            .dh_public()
-            .ok_or(MikeyError::MissingPayload("DH"))?;
+        let peer_pub = init.dh_public().ok_or(MikeyError::MissingPayload("DH"))?;
         let rand = init
             .rand_bytes()
             .ok_or(MikeyError::MissingPayload("RAND"))?;

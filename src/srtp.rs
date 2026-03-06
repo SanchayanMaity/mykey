@@ -90,10 +90,8 @@ mod tests {
         let tgk = vec![0x42u8; 32];
         let rand = vec![0x13u8; 16];
 
-        let keys0 =
-            derive_srtp_keys(&tgk, &rand, 0, SrtpCryptoSuite::AES_128_CM_SHA1_80).unwrap();
-        let keys1 =
-            derive_srtp_keys(&tgk, &rand, 1, SrtpCryptoSuite::AES_128_CM_SHA1_80).unwrap();
+        let keys0 = derive_srtp_keys(&tgk, &rand, 0, SrtpCryptoSuite::AES_128_CM_SHA1_80).unwrap();
+        let keys1 = derive_srtp_keys(&tgk, &rand, 1, SrtpCryptoSuite::AES_128_CM_SHA1_80).unwrap();
 
         assert_ne!(keys0.master_key, keys1.master_key);
         assert_ne!(keys0.master_salt, keys1.master_salt);

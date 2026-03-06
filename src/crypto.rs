@@ -13,8 +13,8 @@ pub fn mikey_prf(key: &[u8], label: &[u8], output_len: usize) -> Result<Vec<u8>>
     let iterations = (output_len + 31) / 32; // SHA-256 output = 32 bytes
 
     for i in 0..iterations {
-        let mut mac = HmacSha256::new_from_slice(key)
-            .map_err(|e| MikeyError::Crypto(e.to_string()))?;
+        let mut mac =
+            HmacSha256::new_from_slice(key).map_err(|e| MikeyError::Crypto(e.to_string()))?;
 
         mac.update(label);
         mac.update(&[0x00]); // separator
@@ -30,8 +30,7 @@ pub fn mikey_prf(key: &[u8], label: &[u8], output_len: usize) -> Result<Vec<u8>>
 
 /// Compute HMAC-SHA-256, truncated to 160 bits (20 bytes) per RFC 3830
 pub fn compute_mac(key: &[u8], data: &[u8]) -> Result<Vec<u8>> {
-    let mut mac = HmacSha256::new_from_slice(key)
-        .map_err(|e| MikeyError::Crypto(e.to_string()))?;
+    let mut mac = HmacSha256::new_from_slice(key).map_err(|e| MikeyError::Crypto(e.to_string()))?;
     mac.update(data);
     let result = mac.finalize().into_bytes();
     Ok(result[..20].to_vec())
