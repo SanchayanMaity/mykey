@@ -26,6 +26,13 @@ A Rust implementation of **MIKEY** (Multimedia Internet KEYing, [RFC 3830](https
 mykey = "0.2.0"
 ```
 
+or to get whatever the latest in Crates.io is, just type:
+
+```bash
+cargo add mykey
+```
+
+
 ## Quick start
 
 ### Ephemeral DH key exchange
