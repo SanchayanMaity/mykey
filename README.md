@@ -23,7 +23,7 @@ A Rust implementation of **MIKEY** (Multimedia Internet KEYing, [RFC 3830](https
 
 ```toml
 [dependencies]
-mykey = { path = "../mykey" }  # not yet published to crates.io
+mykey = "0.2.0"
 ```
 
 ## Quick start
