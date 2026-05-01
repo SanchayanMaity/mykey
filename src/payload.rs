@@ -260,15 +260,15 @@ impl EncAlg {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
 pub enum MacAlg {
-    HmacSha256 = 0,
-    Null = 1,
+    Null = 0,
+    HmacSha256 = 1,
 }
 
 impl MacAlg {
     pub fn from_u8(v: u8) -> Option<Self> {
         match v {
-            0 => Some(Self::HmacSha256),
-            1 => Some(Self::Null),
+            0 => Some(Self::Null),
+            1 => Some(Self::HmacSha256),
             _ => None,
         }
     }
