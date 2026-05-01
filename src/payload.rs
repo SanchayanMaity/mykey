@@ -261,21 +261,21 @@ impl EncAlg {
 #[repr(u8)]
 pub enum MacAlg {
     Null = 0,
-    HmacSha256 = 1,
+    HmacSha1160 = 1,
 }
 
 impl MacAlg {
     pub fn from_u8(v: u8) -> Option<Self> {
         match v {
             0 => Some(Self::Null),
-            1 => Some(Self::HmacSha256),
+            1 => Some(Self::HmacSha1160),
             _ => None,
         }
     }
 
     pub fn mac_len(&self) -> usize {
         match self {
-            Self::HmacSha256 => 20, // truncated to 160 bits per RFC 3830
+            Self::HmacSha1160 => 20, // truncated to 160 bits per RFC 3830
             Self::Null => 0,
         }
     }
